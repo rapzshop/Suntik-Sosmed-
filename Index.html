@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rapz Shop - Auto Social Media Service</title>
+    
+    <!-- CSS & Fonts -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+</head>
+<body>
+    <!-- Background Animation -->
+    <div class="bg-animation"></div>
+    
+    <!-- Loading Spinner -->
+    <div class="spinner-container" id="loadingSpinner">
+        <div class="spinner"></div>
+    </div>
+    
+    <!-- Alert Message -->
+    <div class="alert-message" id="alertMessage">
+        <div class="alert alert-dismissible fade show" role="alert">
+            <span id="alertMessageText"></span>
+            <button type="button" class="btn-close" onclick="UI.hideAlert()"></button>
+        </div>
+    </div>
+    
+    <!-- Auth Pages (Login/Register) -->
+    <div id="authPage" class="auth-container">
+        <div class="auth-card">
+            <div class="logo-container">
+                <div class="logo">RAPZ SHOP</div>
+                <div class="tagline">Auto Social Media Service Provider</div>
+            </div>
+            
+            <div class="auth-tabs">
+                <button class="auth-tab active" id="loginTab">Login</button>
+                <button class="auth-tab" id="registerTab">Register</button>
+            </div>
+            
+            <!-- Login Form -->
+            <div id="loginForm" class="auth-form active">
+                <div class="mb-3">
+                    <input type="text" class="form-control" id="loginUsername" placeholder="Username">
+                    <div class="invalid-feedback" id="loginUsernameError"></div>
+                </div>
+                <div class="mb-3">
+                    <input type="password" class="form-control" id="loginPassword" placeholder="Password">
+                    <div class="invalid-feedback" id="loginPasswordError"></div>
+                </div>
+                <button class="btn btn-primary" id="loginButton">Masuk ke Akun</button>
+            </div>
+            
+            <!-- Register Form -->
+            <div id="registerForm" class="auth-form">
+                <div class="mb-3">
+                    <input type="text" class="form-control" id="registerUsername" placeholder="Username (unik)">
+                    <div class="invalid-feedback" id="registerUsernameError"></div>
+                </div>
+                <div class="mb-3">
+                    <input type="password" class="form-control" id="registerPassword" placeholder="Password (min. 6 karakter)">
+                    <div class="invalid-feedback" id="registerPasswordError"></div>
+                </div>
+                <div class="mb-3">
+                    <input type="password" class="form-control" id="registerConfirmPassword" placeholder="Konfirmasi Password">
+                    <div class="invalid-feedback" id="registerConfirmPasswordError"></div>
+                </div>
+                <div class="mb-3">
+                    <input type="text" class="form-control" id="registerPhone" placeholder="Nomor WhatsApp (opsional)">
+                </div>
+                <button class="btn btn-primary" id="registerButton">Daftar Akun Baru</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Main Dashboard -->
+    <div id="dashboard" class="dashboard">
+        <!-- Navbar -->
+        <nav class="navbar">
+            <div class="container">
+                <div class="d-flex justify-content-between align-items-center w-100">
+                    <div class="nav-logo">RAPZ SHOP</div>
+                    <div class="d-flex align-items-center">
+                        <div class="me-3">
+                            <div class="text-end">
+                                <small class="text-muted">Halo, <span id="userName">User</span></small>
+                                <div class="balance-amount" id="userBalance">Rp 0</div>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary btn-sm" onclick="Auth.logout()">
+                            <i class="fas fa-sign-out-alt me-2"></i>Logout
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        
+        <!-- Main Content -->
+        <div class="container mt-4">
+            <!-- Balance Card -->
+            <div class="balance-card animate__animated animate__fadeIn">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <small>Saldo Tersedia</small>
+                        <div class="balance-amount" id="currentBalance">Rp 100.000</div>
+                    </div>
+                    <div>
+                        <small class="d-block">Saldo akan terisi otomatis setelah order</small>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Categories -->
+            <div class="category-section">
+                <h5 class="mb-3">Pilih Kategori Layanan</h5>
+                <div class="category-tabs" id="categoryTabs"></div>
+            </div>
+            
+            <!-- Subcategories -->
+            <div class="subcategory-section" id="subcategorySection" style="display: none;">
+                <h6 class="mb-3">Jenis Layanan</h6>
+                <div class="subcategory-tabs" id="subcategoryTabs"></div>
+            </div>
+            
+            <!-- Services Grid -->
+            <div class="row mt-4" id="servicesGrid"></div>
+            
+            <!-- Recent Orders -->
+            <div class="mt-5">
+                <h5 class="mb-3">Riwayat Pesanan Terakhir</h5>
+                <div id="recentOrders"></div>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <div class="footer">
+            <div class="container text-center">
+                <p class="text-muted">© 2023 Rapz Shop - Auto Social Media Service Provider</p>
+                <small class="text-muted">Powered by Undctrl API</small>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Order Modal -->
+    <div class="order-modal" id="orderModal">
+        <div class="order-modal-content">
+            <button class="close-modal" onclick="closeOrderModal()">&times;</button>
+            <div class="order-modal-header">
+                <h5>Konfirmasi Pembayaran</h5>
+                <p class="text-muted mb-0" id="orderServiceName"></p>
+            </div>
+            <div class="order-modal-body">
+                <div class="mb-3">
+                    <label class="form-label">Target/Username</label>
+                    <input type="text" class="form-control" id="orderTarget" placeholder="Contoh: @username atau link">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Jumlah</label>
+                    <input type="number" class="form-control" id="orderQuantity" value="100" min="100">
+                    <small class="text-muted" id="orderMinMax"></small>
+                </div>
+                <div class="mb-3">
+                    <div class="d-flex justify-content-between">
+                        <span>Harga Satuan:</span>
+                        <span id="orderUnitPrice">Rp 0</span>
+                    </div>
+                    <div class="d-flex justify-content-between mt-2">
+                        <span>Total Harga:</span>
+                        <span class="fs-5 fw-bold" id="orderTotalPrice">Rp 0</span>
+                    </div>
+                </div>
+                
+                <!-- QR Code Section -->
+                <div class="text-center">
+                    <p>Scan QR Code untuk pembayaran</p>
+                    <div class="qr-container">
+                        <div id="qrCode"></div>
+                        <div class="qr-timer mt-3" id="qrTimer">15:00</div>
+                        <small class="text-muted mt-2">QR berlaku selama <span id="qrValidTime">15 menit</span></small>
+                    </div>
+                    <button class="btn btn-primary mt-3" onclick="Payment.processPayment()" id="processPaymentBtn">
+                        <i class="fas fa-check-circle me-2"></i>Sudah Bayar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- JavaScript Files -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+    
+    <!-- App Modules -->
+    <script src="js/firebase-config.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/services-data.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/payment.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
