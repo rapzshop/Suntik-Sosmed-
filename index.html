@@ -9,12 +9,14 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
-    <link rel="stylesheet" href="css/style.css">
     
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    
+    <!-- External CSS -->
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <!-- Background Animation -->
@@ -29,7 +31,7 @@
     <div class="alert-message" id="alertMessage">
         <div class="alert alert-dismissible fade show" role="alert">
             <span id="alertMessageText"></span>
-            <button type="button" class="btn-close" onclick="UI.hideAlert()"></button>
+            <button type="button" class="btn-close" onclick="hideAlert()"></button>
         </div>
     </div>
     
@@ -95,7 +97,7 @@
                                 <div class="balance-amount" id="userBalance">Rp 0</div>
                             </div>
                         </div>
-                        <button class="btn btn-primary btn-sm" onclick="Auth.logout()">
+                        <button class="btn btn-primary btn-sm" onclick="logout()">
                             <i class="fas fa-sign-out-alt me-2"></i>Logout
                         </button>
                     </div>
@@ -121,22 +123,30 @@
             <!-- Categories -->
             <div class="category-section">
                 <h5 class="mb-3">Pilih Kategori Layanan</h5>
-                <div class="category-tabs" id="categoryTabs"></div>
+                <div class="category-tabs" id="categoryTabs">
+                    <!-- Categories will be loaded by JavaScript -->
+                </div>
             </div>
             
             <!-- Subcategories -->
             <div class="subcategory-section" id="subcategorySection" style="display: none;">
                 <h6 class="mb-3">Jenis Layanan</h6>
-                <div class="subcategory-tabs" id="subcategoryTabs"></div>
+                <div class="subcategory-tabs" id="subcategoryTabs">
+                    <!-- Subcategories will be loaded by JavaScript -->
+                </div>
             </div>
             
             <!-- Services Grid -->
-            <div class="row mt-4" id="servicesGrid"></div>
+            <div class="row mt-4" id="servicesGrid">
+                <!-- Services will be loaded by JavaScript -->
+            </div>
             
             <!-- Recent Orders -->
             <div class="mt-5">
                 <h5 class="mb-3">Riwayat Pesanan Terakhir</h5>
-                <div id="recentOrders"></div>
+                <div id="recentOrders">
+                    <!-- Orders will be loaded by JavaScript -->
+                </div>
             </div>
         </div>
         
@@ -186,7 +196,7 @@
                         <div class="qr-timer mt-3" id="qrTimer">15:00</div>
                         <small class="text-muted mt-2">QR berlaku selama <span id="qrValidTime">15 menit</span></small>
                     </div>
-                    <button class="btn btn-primary mt-3" onclick="Payment.processPayment()" id="processPaymentBtn">
+                    <button class="btn btn-primary mt-3" onclick="processPayment()" id="processPaymentBtn">
                         <i class="fas fa-check-circle me-2"></i>Sudah Bayar
                     </button>
                 </div>
@@ -198,13 +208,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
     
-    <!-- App Modules -->
-    <script src="js/firebase-config.js"></script>
-    <script src="js/config.js"></script>
-    <script src="js/ui.js"></script>
-    <script src="js/services-data.js"></script>
-    <script src="js/auth.js"></script>
-    <script src="js/payment.js"></script>
-    <script src="js/main.js"></script>
+    <!-- External JavaScript -->
+    <script src="script.js"></script>
 </body>
-</html>
+                    </html>
